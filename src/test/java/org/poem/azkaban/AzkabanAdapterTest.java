@@ -19,6 +19,7 @@ public class AzkabanAdapterTest {
     private AzkabanAdapter azkabanAdapter;
 
     private static String projectName = "PROJECT_NAME";
+
     @Test
     public void createProject() throws IOException {
         String flowName = "PROJECT_NAME_FLOW_NAME";
@@ -33,7 +34,7 @@ public class AzkabanAdapterTest {
 
     @Test
     public void updateFile(){
-        String path = "C:\\Users\\Administrator\\Desktop\\job_test.zip";
+        String path = "C:\\Users\\Administrator\\Desktop\\target-test-package.zip";
         try {
             azkabanAdapter.uploadZip(path,projectName);
         } catch (Exception e) {
@@ -52,7 +53,7 @@ public class AzkabanAdapterTest {
     @Test
     public void startFlow(){
         try {
-            String  execId = azkabanAdapter.startFlow(projectName,"job_test");
+            String  execId = azkabanAdapter.startFlow(projectName,"target-test-package");
             System.err.println(execId);
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class AzkabanAdapterTest {
 
     @Test
     public void executionInfo(){
-        String  execId = "1";
+        String  execId = "5";
         logger.info(azkabanAdapter.executionInfo(execId));
     }
 
