@@ -256,9 +256,8 @@ public class AzkabanAdapter {
      * @return
      */
     public String executeFLow(String projectName, String flowId, Map<String, Object> optionalParams) {
-        HttpHeaders httpHeaders = getAzkabanHeaders();
-        httpHeaders.add("Accept", "text/plain;charset=utf-8");
-//        httpHeaders.add("Content-Type","application/json");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
         Map<String, Object> map = new HashMap<>();
         if (optionalParams != null) {
             map.putAll(optionalParams);
@@ -267,9 +266,9 @@ public class AzkabanAdapter {
         map.put("ajax", "getRunning");
         map.put("project", projectName);
         map.put("flow", flowId);
-
+        //flowOverride[type]=apple
         String paramStr = map.keySet().stream()
-                .map(key -> key + "=" + map.get(key))
+                .map(key -> "flowOverride["+ key + "]=" + map.get(key))
                 .collect(Collectors.joining("&"));
 
         ResponseEntity<String> exchange = restTemplate.exchange(config.getUrl() + "/executor?" + paramStr, HttpMethod.GET,
@@ -437,12 +436,16 @@ public class AzkabanAdapter {
      * @param flowName    flow 名称
      * @return 执行 ID
      */
-    public String startFlow(String projectName, String flowName) throws IOException {
+    public String startFlow(String projectName, String flowName,Map<String, Object> optionalParams) throws IOException {
         LinkedMultiValueMap<String, Object> linkedMultiValueMap = new LinkedMultiValueMap<String, Object>();
         linkedMultiValueMap.add("session.id", SESSION_ID);
         linkedMultiValueMap.add("ajax", "executeFlow");
         linkedMultiValueMap.add("project", projectName);
         linkedMultiValueMap.add("flow", flowName);
+        for (String s : optionalParams.keySet()) {
+            linkedMultiValueMap.add("flowOverride["+s+ "]", optionalParams.get(s));
+        }
+
         String res = restTemplate.postForObject(config.getUrl() + "/executor", linkedMultiValueMap, String.class);
         log.info("azkaban start flow:{}", res);
         JsonNode objectNode = objectMapper.readTree(res);
