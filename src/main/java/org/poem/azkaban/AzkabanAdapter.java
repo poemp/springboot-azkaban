@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 public class AzkabanAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(AzkabanAdapter.class);
+
     private static String SESSION_ID;
     @Autowired
     private AzkabanConfiguration config;
@@ -257,7 +258,7 @@ public class AzkabanAdapter {
     public String executeFLow(String projectName, String flowId, Map<String, Object> optionalParams) {
         HttpHeaders httpHeaders = getAzkabanHeaders();
         httpHeaders.add("Accept", "text/plain;charset=utf-8");
-
+//        httpHeaders.add("Content-Type","application/json");
         Map<String, Object> map = new HashMap<>();
         if (optionalParams != null) {
             map.putAll(optionalParams);
@@ -529,6 +530,10 @@ public class AzkabanAdapter {
         return res;
     }
 
+    /**
+     * hdeader
+     * @return
+     */
     private HttpHeaders getAzkabanHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=utf-8");
