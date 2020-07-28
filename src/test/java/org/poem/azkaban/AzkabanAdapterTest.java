@@ -103,6 +103,7 @@ public class AzkabanAdapterTest {
                     "and time <= CONCAT(DATE_FORMAT(NOW(), \"%Y-%m-%d\"),\" 23:59:59\")\n" +
                     "group by `code`,DATE_FORMAT(time, \"%Y-%m-%d\")   \n" +
                     "order by DATE_FORMAT(time, \"%Y-%m-%d\") desc");
+            System.out.println(pushData.getBeforeSql());
             pushData.setAroundSql("insert into wedding_view_bigdata (id, view_count,view_people_count,view_date,attr) values('1', '@count','@user_id', '@time' ,null)");
 
             optionalParams.put("push_json", URLEncoder.encode(JSONObject.toJSONString(pushData), "utf-8"));
@@ -118,7 +119,7 @@ public class AzkabanAdapterTest {
      */
     @Test
     public void executionInfo(){
-        String  execId = "23";
+        String  execId = "22";
         logger.info(azkabanAdapter.executionInfo(execId));
     }
 
