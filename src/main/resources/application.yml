@@ -1,4 +1,4 @@
 azkaban:
-  url: http://localhost:8081
+  url: http://192.168.71.129:8082
   username: azkaban
   password: azkaban

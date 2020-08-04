@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 public class AzkabanAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(AzkabanAdapter.class);
+
     private static String SESSION_ID;
     @Autowired
     private AzkabanConfiguration config;
@@ -436,12 +437,16 @@ public class AzkabanAdapter {
      * @param flowName    flow 名称
      * @return 执行 ID
      */
-    public String startFlow(String projectName, String flowName) throws IOException {
+    public String startFlow(String projectName, String flowName,Map<String, Object> optionalParams) throws IOException {
         LinkedMultiValueMap<String, Object> linkedMultiValueMap = new LinkedMultiValueMap<String, Object>();
         linkedMultiValueMap.add("session.id", SESSION_ID);
         linkedMultiValueMap.add("ajax", "executeFlow");
         linkedMultiValueMap.add("project", projectName);
         linkedMultiValueMap.add("flow", flowName);
+        for (String s : optionalParams.keySet()) {
+            linkedMultiValueMap.add("flowOverride["+s+ "]", optionalParams.get(s));
+        }
+
         String res = restTemplate.postForObject(config.getUrl() + "/executor", linkedMultiValueMap, String.class);
         log.info("azkaban start flow:{}", res);
         JsonNode objectNode = objectMapper.readTree(res);
@@ -529,6 +534,10 @@ public class AzkabanAdapter {
         return res;
     }
 
+    /**
+     * hdeader
+     * @return
+     */
     private HttpHeaders getAzkabanHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=utf-8");
