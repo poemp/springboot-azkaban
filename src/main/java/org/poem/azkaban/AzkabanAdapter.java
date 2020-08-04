@@ -90,7 +90,7 @@ public class AzkabanAdapter {
                 log.info("Azcaban create a Project: {}", projectName);
             } else {
                 String errorMessage = respRoot.hasNonNull("message") ? respRoot.get("message").asText() : "No message.";
-                log.error("Azcaban create Project %s failure: %s", projectName, errorMessage);
+                log.error("Azcaban create Project {} failure: {}}", projectName, errorMessage);
                 throw new AzkabanException(errorMessage);
             }
         } catch (IOException e) {
@@ -123,7 +123,7 @@ public class AzkabanAdapter {
      * @param projectName 项目名称
      * @return 结果
      */
-    public void uploadZip(String zipFilePath, String projectName) throws Exception{
+    public void uploadZip(String zipFilePath, String projectName) throws Exception {
         FileSystemResource file = new FileSystemResource(new File(zipFilePath));
         LinkedMultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("session.id", SESSION_ID);
@@ -247,13 +247,12 @@ public class AzkabanAdapter {
         return exchange.toString();
     }
 
-
     /**
      * 执行
      *
-     * @param projectName 项目名称
-     * @param flowId      flow
-     * @param optionalParams 参数
+     * @param projectName
+     * @param flowId
+     * @param optionalParams
      * @return
      */
     public String executeFLow(String projectName, String flowId, Map<String, Object> optionalParams) {
@@ -269,7 +268,7 @@ public class AzkabanAdapter {
         map.put("flow", flowId);
         //flowOverride[type]=apple
         String paramStr = map.keySet().stream()
-                .map(key -> "flowOverride["+ key + "]=" + map.get(key))
+                .map(key -> "flowOverride[" + key + "]=" + map.get(key))
                 .collect(Collectors.joining("&"));
 
         ResponseEntity<String> exchange = restTemplate.exchange(config.getUrl() + "/executor?" + paramStr, HttpMethod.GET,
@@ -437,14 +436,14 @@ public class AzkabanAdapter {
      * @param flowName    flow 名称
      * @return 执行 ID
      */
-    public String startFlow(String projectName, String flowName,Map<String, Object> optionalParams) throws IOException {
+    public String startFlow(String projectName, String flowName, Map<String, Object> optionalParams) throws IOException {
         LinkedMultiValueMap<String, Object> linkedMultiValueMap = new LinkedMultiValueMap<String, Object>();
         linkedMultiValueMap.add("session.id", SESSION_ID);
         linkedMultiValueMap.add("ajax", "executeFlow");
         linkedMultiValueMap.add("project", projectName);
         linkedMultiValueMap.add("flow", flowName);
         for (String s : optionalParams.keySet()) {
-            linkedMultiValueMap.add("flowOverride["+s+ "]", optionalParams.get(s));
+            linkedMultiValueMap.add("flowOverride[" + s + "]", optionalParams.get(s));
         }
 
         String res = restTemplate.postForObject(config.getUrl() + "/executor", linkedMultiValueMap, String.class);
@@ -536,6 +535,7 @@ public class AzkabanAdapter {
 
     /**
      * hdeader
+     *
      * @return
      */
     private HttpHeaders getAzkabanHeaders() {
