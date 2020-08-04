@@ -246,18 +246,18 @@ public class AzkabanAdapter {
         return exchange.toString();
     }
 
+
     /**
      * 执行
      *
-     * @param projectName
-     * @param flowId
-     * @param optionalParams
+     * @param projectName 项目名称
+     * @param flowId      flow
+     * @param optionalParams 参数
      * @return
      */
     public String executeFLow(String projectName, String flowId, Map<String, Object> optionalParams) {
-        HttpHeaders httpHeaders = getAzkabanHeaders();
-        httpHeaders.add("Accept", "text/plain;charset=utf-8");
-
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
         Map<String, Object> map = new HashMap<>();
         if (optionalParams != null) {
             map.putAll(optionalParams);
@@ -266,9 +266,9 @@ public class AzkabanAdapter {
         map.put("ajax", "getRunning");
         map.put("project", projectName);
         map.put("flow", flowId);
-
+        //flowOverride[type]=apple
         String paramStr = map.keySet().stream()
-                .map(key -> key + "=" + map.get(key))
+                .map(key -> "flowOverride["+ key + "]=" + map.get(key))
                 .collect(Collectors.joining("&"));
 
         ResponseEntity<String> exchange = restTemplate.exchange(config.getUrl() + "/executor?" + paramStr, HttpMethod.GET,
