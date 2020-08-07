@@ -458,11 +458,12 @@ public class AzkabanAdapter {
      * @param execId 执行ID
      * @return 结果
      */
-    public String executionInfo(String execId) {
+    public String executionInfo(String project, String execId) {
         LinkedMultiValueMap<String, Object> linkedMultiValueMap = new LinkedMultiValueMap<>();
         linkedMultiValueMap.add("session.id", SESSION_ID);
         linkedMultiValueMap.add("ajax", "fetchexecflow");
         linkedMultiValueMap.add("execid", execId);
+        linkedMultiValueMap.add("project",project);
         String res = restTemplate.postForObject(config.getUrl() + "/executor", linkedMultiValueMap, String.class);
         log.info("azkaban execution info:{}", res);
         return res;
