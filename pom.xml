@@ -22,22 +22,34 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <swagger2.version>2.9.2</swagger2.version>
+        <swaggerbootstrapui.version>1.9.3</swaggerbootstrapui.version>
+        <knife4j.version>2.0.1</knife4j.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>swagger-bootstrap-ui</artifactId>
+            <version>${swaggerbootstrapui.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.linkedin.azkaban/azkaban-common -->
-        <dependency>
-            <groupId>com.linkedin.azkaban</groupId>
-            <artifactId>azkaban-common</artifactId>
-            <version>3.58.0</version>
         </dependency>
 
 

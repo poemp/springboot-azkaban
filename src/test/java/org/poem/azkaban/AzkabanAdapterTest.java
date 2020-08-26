@@ -120,7 +120,7 @@ public class AzkabanAdapterTest {
     @Test
     public void executionInfo(){
         String  execId = "22";
-        logger.info(azkabanAdapter.executionInfo(execId));
+        logger.info(azkabanAdapter.executionInfo(execId, ""));
     }
 
     @Test
